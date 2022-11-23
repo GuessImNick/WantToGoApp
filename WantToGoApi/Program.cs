@@ -52,6 +52,7 @@ builder.Services.AddSwaggerGen();
 // Start AddTransient
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IReviewRepository, ReviewRepository>();
+builder.Services.AddTransient<IRestaurantRepository, RestaurantRepository>();
 // End AddTransient
 
 var app = builder.Build();

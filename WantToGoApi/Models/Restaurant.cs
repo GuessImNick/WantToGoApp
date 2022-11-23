@@ -11,8 +11,6 @@
         public string Zip { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
-
-        public List<Review> Reviews { get; set; }
-        public int ReviewsCount { get; set; }
+        public List<Review>? Reviews { get; set; }
     }
 }
