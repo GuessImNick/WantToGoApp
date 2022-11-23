@@ -7,10 +7,14 @@ namespace WantToGoApi.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly IConfiguration _config;
+        private INotificationRepository _notificationRepo;
+        private IFavoriteRepository _favoriteRepo;
 
-        public UserRepository(IConfiguration config)
+        public UserRepository(IConfiguration config, INotificationRepository notificationRepo, IFavoriteRepository favoriteRepo)
         {
             _config = config;
+            _notificationRepo = notificationRepo;
+            _favoriteRepo = favoriteRepo;
         }
 
         public SqlConnection Connection
@@ -49,7 +53,9 @@ namespace WantToGoApi.Repositories
                                 FirstName = reader.GetString(reader.GetOrdinal("firstName")),
                                 LastName = reader.GetString(reader.GetOrdinal("lastName")),
                                 Dob = reader.GetString(reader.GetOrdinal("dob")),
-                                IsAdmin = reader.GetBoolean(reader.GetOrdinal("isAdmin"))
+                                IsAdmin = reader.GetBoolean(reader.GetOrdinal("isAdmin")),
+                                Favorites = _favoriteRepo.GetFavoritesByUserId(reader.GetInt32(reader.GetOrdinal("id"))),
+                                Notifications = _notificationRepo.GetByUserId(reader.GetInt32(reader.GetOrdinal("id")))
                             };
                             users.Add(user);
                         }
@@ -90,7 +96,9 @@ namespace WantToGoApi.Repositories
                                 FirstName = reader.GetString(reader.GetOrdinal("firstName")),
                                 LastName = reader.GetString(reader.GetOrdinal("lastName")),
                                 Dob = reader.GetString(reader.GetOrdinal("dob")),
-                                IsAdmin = reader.GetBoolean(reader.GetOrdinal("isAdmin"))
+                                IsAdmin = reader.GetBoolean(reader.GetOrdinal("isAdmin")),
+                                Favorites = _favoriteRepo.GetFavoritesByUserId(reader.GetInt32(reader.GetOrdinal("id"))),
+                                Notifications = _notificationRepo.GetByUserId(reader.GetInt32(reader.GetOrdinal("id")))
                             };
                             return user;
                         }
@@ -134,7 +142,9 @@ namespace WantToGoApi.Repositories
                                 FirstName = reader.GetString(reader.GetOrdinal("firstName")),
                                 LastName = reader.GetString(reader.GetOrdinal("lastName")),
                                 Dob = reader.GetString(reader.GetOrdinal("dob")),
-                                IsAdmin = reader.GetBoolean(reader.GetOrdinal("isAdmin"))
+                                IsAdmin = reader.GetBoolean(reader.GetOrdinal("isAdmin")),
+                                Favorites = _favoriteRepo.GetFavoritesByUserId(reader.GetInt32(reader.GetOrdinal("id"))),
+                                Notifications = _notificationRepo.GetByUserId(reader.GetInt32(reader.GetOrdinal("id")))
                             };
                             return user;
                         }
