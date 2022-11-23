@@ -23,13 +23,35 @@ namespace WantToGoApi.Repositories
             }
         }
 
-        public List<Restaurant> GetAll()
+        public List<Restaurant> GetAll(int page)
         {
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
+                    int rowAmount = 0;
+                    int reqPage = page;
+                    cmd.CommandText = @"SELECT COUNT(*) as amount
+                                        FROM [Restaurant]";
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if(reader.Read())
+                        {
+                            rowAmount = reader.GetInt32(reader.GetOrdinal("amount"));
+                        }
+                    }
+
+                    decimal pageCount = Math.Ceiling(Decimal.Divide(rowAmount, 200));
+                    if(reqPage > pageCount)
+                    {
+                        reqPage = Decimal.ToInt32(pageCount);
+                    } else if (reqPage <= 0)
+                    {
+                        reqPage = 1;
+                    }
+
                     cmd.CommandText = @"SELECT  id, 
 												name, 
 												categories, 
@@ -41,9 +63,10 @@ namespace WantToGoApi.Repositories
                                                 longitude
 										FROM [Restaurant]
                                         ORDER BY(SELECT NULL)
-                                        OFFSET 0 ROWS
-                                        FETCH NEXT 100 ROWS ONLY
+                                        OFFSET @rowNums ROWS
+                                        FETCH NEXT 200 ROWS ONLY
 									  ";
+                    cmd.Parameters.AddWithValue("@rowNums", (reqPage - 1) * 200);
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -55,7 +78,7 @@ namespace WantToGoApi.Repositories
                                 Id = reader.GetString(reader.GetOrdinal("id")),
                                 Name = reader.GetString(reader.GetOrdinal("name")),
                                 Categories = reader.GetString(reader.GetOrdinal("categories")),
-                                Address = reader.GetString(reader.GetOrdinal("address")),
+                                Address = reader[(reader.GetOrdinal("address"))] == DBNull.Value ? "Food Truck" : reader.GetString(reader.GetOrdinal("address")),
                                 City = reader.GetString(reader.GetOrdinal("city")),
                                 State = reader.GetString(reader.GetOrdinal("state")),
                                 Zip = reader.GetString(reader.GetOrdinal("zip")),
@@ -104,7 +127,7 @@ namespace WantToGoApi.Repositories
                                 Id = reader.GetString(reader.GetOrdinal("id")),
                                 Name = reader.GetString(reader.GetOrdinal("name")),
                                 Categories = reader.GetString(reader.GetOrdinal("categories")),
-                                Address = reader.GetString(reader.GetOrdinal("address")),
+                                Address = reader[(reader.GetOrdinal("address"))] == DBNull.Value ? "Food Truck" : reader.GetString(reader.GetOrdinal("address")),
                                 City = reader.GetString(reader.GetOrdinal("city")),
                                 State = reader.GetString(reader.GetOrdinal("state")),
                                 Zip = reader.GetString(reader.GetOrdinal("zip")),

@@ -20,9 +20,9 @@ namespace WantToGoApi.Controllers
         // RETURN: A paginated list of restaurants
         // TODO: Add pagination logic
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(int page = 1)
         {
-            List<Restaurant> restaurants = _restaurantRepo.GetAll();
+            List<Restaurant> restaurants = _restaurantRepo.GetAll(page);
             if(restaurants == null)
             {
                 return NotFound();

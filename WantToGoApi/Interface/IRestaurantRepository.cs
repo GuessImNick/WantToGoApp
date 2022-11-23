@@ -4,7 +4,7 @@ namespace WantToGoApi.Interface
 {
     public interface IRestaurantRepository
     {
-        List<Restaurant> GetAll();
+        List<Restaurant> GetAll(int page);
         Restaurant GetById(string id);
     }
 }
