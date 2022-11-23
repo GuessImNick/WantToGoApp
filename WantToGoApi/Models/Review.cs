@@ -6,5 +6,6 @@
         public int UserId { get; set; }
         public string RestaurantId { get; set; }
         public string ReviewText { get; set; }
+        public List<Like>? Likes { get; set; } = new();
     }
 }

@@ -18,9 +18,9 @@ namespace WantToGoApi.Controllers
         }
 
         // GET: api/User
-        // GET a list of all users
+        // RETURNS: a list of all users
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetAllUsers()
         {
             List<User> users = _userRepo.GetAllUsers();
 
@@ -32,9 +32,9 @@ namespace WantToGoApi.Controllers
         }
 
         // GET api/User/{id}
-        // GET a user by id
+        // RETURNS: a user by id
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult GetById(int id)
         {
             User user = _userRepo.GetUserById(id);
             if (user == null)
@@ -45,9 +45,9 @@ namespace WantToGoApi.Controllers
         }
 
         // GET api/User/firebase/{id}
-        // GET a user by firebaseUid
+        // RETURNS: a user by firebaseUid
         [HttpGet("firebase/{firebaseUid}")]
-        public IActionResult Get(string firebaseUid)
+        public IActionResult GetByFirebaseId(string firebaseUid)
         {
             User user = _userRepo.GetUserByFirebaseId(firebaseUid);
             if(user == null)
