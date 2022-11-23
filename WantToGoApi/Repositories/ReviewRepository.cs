@@ -7,10 +7,12 @@ namespace WantToGoApi.Repositories
     public class ReviewRepository : IReviewRepository
     {
         private readonly IConfiguration _config;
+        private ILikeRepository _likeRepo;
 
-        public ReviewRepository(IConfiguration config)
+        public ReviewRepository(IConfiguration config, ILikeRepository likeRepo)
         {
             _config = config;
+            _likeRepo = likeRepo;
         }
 
         public SqlConnection Connection
@@ -45,7 +47,8 @@ namespace WantToGoApi.Repositories
                                 Id = reader.GetInt32(reader.GetOrdinal("id")),
                                 UserId = reader.GetInt32(reader.GetOrdinal("userId")),
                                 RestaurantId = reader.GetString(reader.GetOrdinal("restaurantId")),
-                                ReviewText = reader.GetString(reader.GetOrdinal("reviewText"))
+                                ReviewText = reader.GetString(reader.GetOrdinal("reviewText")),
+                                Likes = _likeRepo.GetByReviewId(reader.GetInt32(reader.GetOrdinal("id")))
                             };
                             reviews.Add(review);
                         }
@@ -82,7 +85,8 @@ namespace WantToGoApi.Repositories
                                 Id = reader.GetInt32(reader.GetOrdinal("id")),
                                 UserId = reader.GetInt32(reader.GetOrdinal("userId")),
                                 RestaurantId = reader.GetString(reader.GetOrdinal("restaurantId")),
-                                ReviewText = reader.GetString(reader.GetOrdinal("reviewText"))
+                                ReviewText = reader.GetString(reader.GetOrdinal("reviewText")),
+                                Likes = _likeRepo.GetByReviewId(reader.GetInt32(reader.GetOrdinal("id")))
                             };
                             return review;
                         }
@@ -123,7 +127,8 @@ namespace WantToGoApi.Repositories
                                 Id = reader.GetInt32(reader.GetOrdinal("id")),
                                 UserId = reader.GetInt32(reader.GetOrdinal("userId")),
                                 RestaurantId = reader.GetString(reader.GetOrdinal("restaurantId")),
-                                ReviewText = reader.GetString(reader.GetOrdinal("reviewText"))
+                                ReviewText = reader.GetString(reader.GetOrdinal("reviewText")),
+                                Likes = _likeRepo.GetByReviewId(reader.GetInt32(reader.GetOrdinal("id")))
                             };
                             reviews.Add(review);
                         }
