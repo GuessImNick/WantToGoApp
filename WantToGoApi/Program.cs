@@ -2,6 +2,8 @@ using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using WantToGoApi.Interface;
+using WantToGoApi.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 var WantToGoApi = "_wantToGoApi";
@@ -44,6 +46,12 @@ builder.Services.AddCors(options =>
                                 .WithExposedHeaders("*");
                       });
 });
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+// Start AddTransient
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+// End AddTransient
 
 var app = builder.Build();
 
