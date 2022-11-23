@@ -96,7 +96,7 @@ namespace WantToGoApi.Repositories
             }
         }
 
-        public Review GetReviewByRestaurantId(string restaurantId)
+        public List<Review> GetReviewsByRestaurantId(string restaurantId)
         {
             using (SqlConnection conn = Connection)
             {
@@ -115,7 +115,8 @@ namespace WantToGoApi.Repositories
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        if (reader.Read())
+                        List<Review> reviews = new List<Review>();
+                        while (reader.Read())
                         {
                             Review review = new Review()
                             {
@@ -124,12 +125,9 @@ namespace WantToGoApi.Repositories
                                 RestaurantId = reader.GetString(reader.GetOrdinal("restaurantId")),
                                 ReviewText = reader.GetString(reader.GetOrdinal("reviewText"))
                             };
-                            return review;
+                            reviews.Add(review);
                         }
-                        else
-                        {
-                            return null;
-                        }
+                        return reviews;
                     }
 
                 }

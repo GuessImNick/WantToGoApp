@@ -48,12 +48,12 @@ namespace WantToGoApi.Controllers
         [HttpGet("restaurant/{restaurantId}")]
         public IActionResult GetByRestaurantId(string restaurantId)
         {
-            Review review = _reviewRepo.GetReviewByRestaurantId(restaurantId);
-            if (review == null)
+            List<Review> reviews = _reviewRepo.GetReviewsByRestaurantId(restaurantId);
+            if (reviews == null)
             {
                 return NotFound();
             }
-            return Ok(review);
+            return Ok(reviews);
         }
 
         // POST api/Review
