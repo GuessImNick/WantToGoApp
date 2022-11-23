@@ -171,10 +171,8 @@ namespace WantToGoApi.Repositories
                     cmd.Parameters.AddWithValue("@dob", user.Dob);
                     cmd.Parameters.AddWithValue("@isAdmin", user.IsAdmin);
 
-                    int id = (int)cmd.ExecuteScalar();
+                    return (int)cmd.ExecuteScalar();
 
-                    user.Id = id;
-                    return id;
                 }
             }
 
