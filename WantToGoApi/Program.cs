@@ -55,6 +55,7 @@ builder.Services.AddTransient<IReviewRepository, ReviewRepository>();
 builder.Services.AddTransient<IRestaurantRepository, RestaurantRepository>();
 builder.Services.AddTransient<IFavoriteRepository, FavoriteRepository>();
 builder.Services.AddTransient<ILikeRepository, LikeRepository>();
+builder.Services.AddTransient<INotificationRepository, NotificationRepository>();
 // End AddTransient
 
 var app = builder.Build();
