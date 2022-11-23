@@ -31,6 +31,7 @@ namespace WantToGoApi.Controllers
         }
 
         // GET api/<RestaurantController>/5
+        // RETURN: a restaurant by id
         [HttpGet("{id}")]
         public IActionResult Get(string id)
         {
