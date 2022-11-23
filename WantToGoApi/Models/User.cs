@@ -9,7 +9,7 @@
         public string Dob { get; set; }
         public bool IsAdmin { get; set; }
 
-        public List<Favorite> Favorites { get; set; }
-        public List<Notification> Notifications { get; set; }
+        public List<Favorite>? Favorites { get; set; }
+        public List<Notification>? Notifications { get; set; }
     }
 }
