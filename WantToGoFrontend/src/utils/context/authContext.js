@@ -4,12 +4,13 @@ import React, {
   useEffect,
   useMemo,
   useState,
-} from 'react';
-import { firebase } from '../client';
+} from "react";
+import { UserApi } from "../../api/userApi";
+import { firebase } from "../client";
 
 const AuthContext = createContext();
 
-AuthContext.displayName = 'AuthContext';
+AuthContext.displayName = "AuthContext";
 
 const AuthProvider = (props) => {
   const [user, setUser] = useState(null);
@@ -17,11 +18,12 @@ const AuthProvider = (props) => {
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (fbUser) => {
       if (fbUser) {
-        setUser({fbUser: { ...fbUser }, dbUser: {}});
+        const dbUser = await UserApi.getUserByFirebaseId(fbUser.uid);
+        setUser({ fbUser: { ...fbUser }, dbUser });
       } else {
         setUser(false);
       }
-    }); 
+    });
   }, []);
 
   const value = useMemo(
@@ -30,7 +32,7 @@ const AuthProvider = (props) => {
       setUser,
       userLoading: user === null,
     }),
-    [user],
+    [user]
   );
 
   return <AuthContext.Provider value={value} {...props} />;
@@ -41,7 +43,7 @@ const useAuth = () => {
   const context = useContext(AuthContext);
 
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
