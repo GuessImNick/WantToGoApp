@@ -46,13 +46,27 @@
   font-weight: 700;
 }
 
-.reviews {
+.review-content {
   width: 100%;
   min-height: 100vh;
   background-color: #d3d3d3;
   position: absolute;
   top: 64%;
   transition: ease-in-out 1s all;
+  padding-bottom: 150px;
+}
+
+.review-header {
+  background-color: #fff;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -1px;
+  font-size: 16px;
+  font-weight: 700;
+  border-bottom: 1px solid #d3d3d3;
 }
 
 .hide {
@@ -67,6 +81,67 @@
 
 .rotate {
   transform: rotate(-180deg);
+}
+
+.review-input {
+  position: fixed;
+  bottom: 98px;
+  width: 100%;
+  z-index: 2;
+  background-color: #fff;
+  padding: 10px 20px;
+  border-top: #d3d3d3 1px solid;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.review-input input {
+  border-radius: 50px;
+  border: 1px solid #000;
+  height: 40px;
+  width: 90%;
+  padding: 10px 15px;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.review-input input:focus {
+  outline: none;
+}
+
+.review-input input::placeholder {
+  color: #000;
+}
+
+.send-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.no-reviews {
+  width: 100%;
+  height: 100%;
+  padding-top: 50px;
+}
+
+.no-review-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  text-align: center;
+}
+
+.no-review-content h2 {
+  width: 70%;
+}
+
+.no-review-icon {
+  width: 150px;
+  height: 150px;
 }
 
 /* Map Styles */

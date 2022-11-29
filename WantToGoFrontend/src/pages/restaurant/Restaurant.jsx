@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { restaurantApi } from "../../api/restaurantApi";
-import { FaRegMap } from "react-icons/fa";
-import { RiHeart3Fill, RiHeart3Line, RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri";
+import { FaRegMap, FaRegPaperPlane, FaRegCommentDots } from "react-icons/fa";
+import { RiHeart3Fill, RiHeart3Line, RiArrowDownSLine } from "react-icons/ri";
 import "./Restaurant.css";
 import { useAuth } from "../../utils/context/authContext";
 import { favoriteApi } from "../../api/favoriteApi";
 import { UserApi } from "../../api/userApi";
+import ReviewCard from "./components/reviewCard/ReviewCard";
+import { ReviewApi } from "../../api/reviewApi";
 
 const Restaurant = () => {
   const [restaurant, setRestaurant] = useState({});
   const [coverMap, setCoverMap] = useState(true);
+  const [reviewText, setReviewText] = useState("");
 
   const { user, setUser } = useAuth();
   const { restaurantId } = useParams();
@@ -55,6 +58,23 @@ const Restaurant = () => {
     });
   };
 
+  const addReview = async () => {
+    if (reviewText.length > 20) {
+      const date = new Date();
+      await ReviewApi.addReview({
+        userId: user.dbUser.id,
+        restaurantId: restaurant.id,
+        reviewText,
+        reviewDate: date.toISOString().slice(0, 19),
+      });
+      const res = await restaurantApi.getRestaurantById(restaurant.id);
+      setRestaurant((prev) => {
+        return { ...prev, reviews: res.reviews };
+      });
+      setReviewText("");
+    }
+  };
+
   const favorite = () => {
     const fav = user.dbUser.favorites.find(
       (res) => res.restaurantId === restaurant.id
@@ -92,7 +112,7 @@ const Restaurant = () => {
       </div>
 
       <div className={`mapouter ${coverMap ? "map-freeze" : ""}`}>
-        <div className="gmap-canvas" >
+        <div className="gmap-canvas">
           <iframe
             width="350"
             height="350"
@@ -102,13 +122,47 @@ const Restaurant = () => {
         </div>
       </div>
 
-      <div className={`reviews ${coverMap ? "hide" : "show"}`}>
+      <div className={`review-content ${coverMap ? "hide" : "show"}`}>
         <div
           className="map-cover-button"
           onClick={(e) => setCoverMap((prev) => !prev)}
         >
           <p>{coverMap ? "EXPAND MAP" : "COLLAPSE MAP"}</p>
-          {coverMap ? <RiArrowDownSLine className="icon-link"/> : <RiArrowDownSLine className="icon-link rotate" />}
+          {coverMap ? (
+            <RiArrowDownSLine className="icon-link" />
+          ) : (
+            <RiArrowDownSLine className="icon-link rotate" />
+          )}
+        </div>
+        <div className="review-header">
+          <p>REVIEWS</p>
+        </div>
+        <div className="reviews">
+          {restaurant.reviews?.length > 0 ? (
+            restaurant.reviews?.map((review) => (
+              <ReviewCard
+                review={review}
+                key={review.id}
+                setRestaurant={setRestaurant}
+              />
+            ))
+          ) : (
+            <div className="no-reviews">
+              <div className="no-review-content">
+                <FaRegCommentDots className="no-review-icon" />
+                <h2>Be The First To Review This Location</h2>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="review-input">
+          <input
+            type="text"
+            placeholder="Enter Your Review"
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+          />
+          <FaRegPaperPlane className="send-icon" onClick={addReview} />
         </div>
       </div>
     </div>
