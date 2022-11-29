@@ -19,8 +19,16 @@ const RestaurantCard = ({ restaurant }) => {
     }
   };
 
+  const nameFormatter = (name) => {
+    if (name.length <= 40) {
+      return name;
+    } else {
+      return name.slice(0, 30) + "...";
+    }
+  };
+
   const addFavorite = async () => {
-      await favoriteApi.createNewFavorite({
+    await favoriteApi.createNewFavorite({
       userId: user.dbUser.id,
       restaurantId: restaurant.id,
     });
@@ -47,16 +55,35 @@ const RestaurantCard = ({ restaurant }) => {
     );
 
     if (fav) {
-      return <RiHeart3Fill className="card-link fav" onClick={deleteFavorite}/>;
+      return (
+        <RiHeart3Fill
+          className="card-link fav"
+          onClick={(e) => {
+            e.stopPropagation();
+            deleteFavorite(e);
+          }}
+        />
+      );
     } else {
-      return <RiHeart3Line className="card-link" onClick={addFavorite} />;
+      return (
+        <RiHeart3Line
+          className="card-link"
+          onClick={(e) => {
+            e.stopPropagation();
+            addFavorite(e);
+          }}
+        />
+      );
     }
   };
 
   return (
-    <div className="card" onClick={() => navigate(`/restaurant/${restaurant.id}`)}>
+    <div
+      className="card"
+      onClick={() => navigate(`/restaurant/${restaurant.id}`)}
+    >
       <div className="card-header">
-        <h2>{restaurant.name}</h2>
+        <h2>{nameFormatter(restaurant.name)}</h2>
         <p>{categoreyFormatter(restaurant.categories)}</p>
       </div>
       <div className="card-body">

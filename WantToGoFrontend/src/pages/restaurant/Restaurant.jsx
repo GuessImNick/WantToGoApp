@@ -25,13 +25,20 @@ const Restaurant = () => {
     getRestaurant();
   }, [restaurantId]);
 
+  const nameFormatter = (name) => {
+    if (name?.length <= 40) {
+      return name;
+    } else {
+      return name?.slice(0, 30) + "...";
+    }
+  };
+
   const addFavorite = async () => {
     await favoriteApi.createNewFavorite({
       userId: user.dbUser.id,
       restaurantId: restaurant.id,
     });
     const refreshUser = await UserApi.getUserByFirebaseId(user.fbUser.uid);
-    console.log(refreshUser);
     setUser((prev) => {
       return { ...prev, dbUser: refreshUser };
     });
@@ -66,7 +73,7 @@ const Restaurant = () => {
     <div className="restaurant-content">
       <div className="restaurant-header">
         <div className="left-content">
-          <h2>{restaurant.name}</h2>
+          <h2>{nameFormatter(restaurant.name)}</h2>
           <p>{restaurant.categories}</p>
         </div>
         <div className="right-content">
@@ -98,10 +105,7 @@ const Restaurant = () => {
       <div className={`reviews ${coverMap ? "hide" : "show"}`}>
         <div
           className="map-cover-button"
-          onClick={(e) => {
-            setCoverMap((prev) => !prev);
-            console.log('yeah')
-          }}
+          onClick={(e) => setCoverMap((prev) => !prev)}
         >
           <p>{coverMap ? "EXPAND MAP" : "COLLAPSE MAP"}</p>
           {coverMap ? <RiArrowDownSLine className="icon-link"/> : <RiArrowDownSLine className="icon-link rotate" />}
