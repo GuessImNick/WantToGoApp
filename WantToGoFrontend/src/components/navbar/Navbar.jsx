@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./Navbar.css";
 import {
   RiSearchFill,
@@ -10,13 +10,14 @@ import {
 } from "react-icons/ri";
 import { FaBell, FaRegBell } from "react-icons/fa";
 import { TfiMoreAlt, TfiMore } from "react-icons/tfi";
-import { useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = ({changePath, path, setPath}) => {
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    setPath(history.location.pathname);
+    setPath(location.pathname);
   }, []);
 
   return (

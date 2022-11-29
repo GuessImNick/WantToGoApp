@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { restaurantApi } from "../api/restaurantApi";
 import Navbar from "../components/navbar/Navbar";
 import Home from "../pages/home/Home";
@@ -12,9 +12,9 @@ function App() {
   const [path, setPath] = useState("");
   const [restaurants, setRestaurants] = useState([]);
   const [visibleRestaurants, setVisibleRestaurants] = useState([]);
-
+  
+  const navigate = useNavigate();
   const { user, userLoading, setUser } = useAuth();
-  const history = useHistory();
 
   const getRestaurants = async () => {
     const restaurants = await restaurantApi.getRestaurantList();
@@ -45,7 +45,7 @@ function App() {
   }, [restaurants]);
 
   const changePath = (path) => {
-    history.push(path);
+    navigate(path);
     setPath(path);
   };
 
@@ -54,15 +54,15 @@ function App() {
   if (!user) return <LandingPage />;
   return (
     <>
-      <Switch>
+      <Routes>
         <Route
           exact
           path="/"
-          component={() => <Home changePath={changePath} visibleRestaurants={visibleRestaurants} getVisibleRestaurants={getVisibleRestaurants} />}
+          element={<Home changePath={changePath} visibleRestaurants={visibleRestaurants} getVisibleRestaurants={getVisibleRestaurants} />}
         />
-        <Route exact path="/restaurant/:restaurantId(\d+)" component={() => <Restaurant />} />
-        <Route path="*" component={() => <Home changePath={changePath} visibleRestaurants={visibleRestaurants} />} />
-      </Switch>
+        <Route  path="/restaurant/:restaurantId" element={<Restaurant />} />
+        <Route path="*" element={<Home changePath={changePath} visibleRestaurants={visibleRestaurants} />} />
+      </Routes>
       <Navbar changePath={changePath} setPath={setPath} path={path} />
     </>
   );

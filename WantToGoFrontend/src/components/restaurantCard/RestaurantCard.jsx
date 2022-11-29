@@ -5,11 +5,11 @@ import { RiHeart3Fill, RiHeart3Line } from "react-icons/ri";
 import { useAuth } from "../../utils/context/authContext";
 import { favoriteApi } from "../../api/favoriteApi";
 import { UserApi } from "../../api/userApi";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const RestaurantCard = ({ restaurant }) => {
   const { user, setUser } = useAuth();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const categoreyFormatter = (category) => {
     if (category.length <= 40) {
@@ -25,7 +25,6 @@ const RestaurantCard = ({ restaurant }) => {
       restaurantId: restaurant.id,
     });
     const refreshUser = await UserApi.getUserByFirebaseId(user.fbUser.uid);
-    console.log(refreshUser);
     setUser((prev) => {
       return { ...prev, dbUser: refreshUser };
     });
@@ -37,7 +36,6 @@ const RestaurantCard = ({ restaurant }) => {
     );
     await favoriteApi.deleteFavorite(fav.id);
     const refreshUser = await UserApi.getUserByFirebaseId(user.fbUser.uid);
-    console.log(fav);
     setUser((prev) => {
       return { ...prev, dbUser: refreshUser };
     });
@@ -56,7 +54,7 @@ const RestaurantCard = ({ restaurant }) => {
   };
 
   return (
-    <div className="card" >
+    <div className="card" onClick={() => navigate(`/restaurant/${restaurant.id}`)}>
       <div className="card-header">
         <h2>{restaurant.name}</h2>
         <p>{categoreyFormatter(restaurant.categories)}</p>
@@ -73,7 +71,7 @@ const RestaurantCard = ({ restaurant }) => {
           <ul>
             <li>
               <a
-                href={`https://www.google.com/maps/search/?api=1&query=${`${restaurant.name}`}`}
+                href={`https://www.google.com/maps/search/?api=1&query=${`${restaurant.name}%2C${restaurant.city}`}`}
                 target="_blank"
               >
                 <FaRegMap className="card-link" />
