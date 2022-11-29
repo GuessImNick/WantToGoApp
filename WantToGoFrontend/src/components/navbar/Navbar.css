@@ -1,0 +1,22 @@
+nav {
+    height: 100px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: #fff;
+    padding: 25px 30px 40px 30px;
+    border-top: 1px solid #d3d3d3;
+}
+
+nav ul {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+.nav-icon {
+    width: 35px;
+    height: 35px;
+}
+

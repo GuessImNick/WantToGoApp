@@ -33,7 +33,8 @@ namespace WantToGoApi.Repositories
                     cmd.CommandText = @"SELECT  id, 
 												userId, 
 												restaurantId, 
-												reviewText
+												reviewText,
+                                                reviewDate
 										FROM [Review]
 									  ";
 
@@ -48,6 +49,7 @@ namespace WantToGoApi.Repositories
                                 UserId = reader.GetInt32(reader.GetOrdinal("userId")),
                                 RestaurantId = reader.GetString(reader.GetOrdinal("restaurantId")),
                                 ReviewText = reader.GetString(reader.GetOrdinal("reviewText")),
+                                ReviewDate = reader.GetDateTime(reader.GetOrdinal("reviewDate")),
                                 Likes = _likeRepo.GetByReviewId(reader.GetInt32(reader.GetOrdinal("id")))
                             };
                             reviews.Add(review);
@@ -69,7 +71,8 @@ namespace WantToGoApi.Repositories
                     cmd.CommandText = @"SELECT  id, 
 												userId, 
 												restaurantId, 
-												reviewText
+												reviewText,
+                                                reviewDate
 										FROM [Review]
 										WHERE id = @id
 									  ";
@@ -86,6 +89,7 @@ namespace WantToGoApi.Repositories
                                 UserId = reader.GetInt32(reader.GetOrdinal("userId")),
                                 RestaurantId = reader.GetString(reader.GetOrdinal("restaurantId")),
                                 ReviewText = reader.GetString(reader.GetOrdinal("reviewText")),
+                                ReviewDate = reader.GetDateTime(reader.GetOrdinal("reviewDate")),
                                 Likes = _likeRepo.GetByReviewId(reader.GetInt32(reader.GetOrdinal("id")))
                             };
                             return review;
@@ -110,7 +114,8 @@ namespace WantToGoApi.Repositories
                     cmd.CommandText = @"SELECT  id, 
 												userId, 
 												restaurantId, 
-												reviewText
+												reviewText,
+                                                reviewDate
 										FROM [Review]
 										WHERE restaurantId = @restaurantId
 									  ";
@@ -128,6 +133,7 @@ namespace WantToGoApi.Repositories
                                 UserId = reader.GetInt32(reader.GetOrdinal("userId")),
                                 RestaurantId = reader.GetString(reader.GetOrdinal("restaurantId")),
                                 ReviewText = reader.GetString(reader.GetOrdinal("reviewText")),
+                                ReviewDate = reader.GetDateTime(reader.GetOrdinal("reviewDate")),
                                 Likes = _likeRepo.GetByReviewId(reader.GetInt32(reader.GetOrdinal("id")))
                             };
                             reviews.Add(review);
@@ -149,14 +155,16 @@ namespace WantToGoApi.Repositories
 											INSERT INTO [Review] 
 															(userId, 
 												            restaurantId, 
-												            reviewText)
+												            reviewText,
+                                                            reviewDate)
 											OUTPUT INSERTED.ID
-											VALUES (@userId, @restaurantId, @reviewText)
+											VALUES (@userId, @restaurantId, @reviewText, @reviewDate)
 											";
 
                     cmd.Parameters.AddWithValue("@userId", review.UserId);
                     cmd.Parameters.AddWithValue("@restaurantId", review.RestaurantId);
                     cmd.Parameters.AddWithValue("@reviewText", review.ReviewText);
+                    cmd.Parameters.AddWithValue("@reviewDate", review.ReviewDate);
 
                    return (int)cmd.ExecuteScalar();
                     
@@ -175,13 +183,15 @@ namespace WantToGoApi.Repositories
 										UPDATE [Review]
 										SET userId = @userId,
 											restaurantId = @restaurantId,
-											reviewText = @reviewText
+											reviewText = @reviewText,
+                                            reviewDate = @reviewDate
 										WHERE Id = @id
 										";
                     cmd.Parameters.AddWithValue("@id", id);
                     cmd.Parameters.AddWithValue("@userId", review.UserId);
                     cmd.Parameters.AddWithValue("@restaurantId", review.RestaurantId);
                     cmd.Parameters.AddWithValue("@reviewText", review.ReviewText);
+                    cmd.Parameters.AddWithValue("@reviewDate", review.ReviewDate);
 
                     return cmd.ExecuteNonQuery();
                 }
