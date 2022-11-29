@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Button from "../../../../components/button/Button";
-import ForgotPasswordPopup from "../../components/forgotPasswordPopup/ForgotPasswordPopup";
-import LoginPopup from "../../components/loginPopup/LoginPopup";
-import RegisterPopup from "../../components/registerPopup/RegisterPopup";
+import Button from "../../components/button/Button";
+import ForgotPasswordPopup from "./components/forgotPasswordPopup/ForgotPasswordPopup";
+import LoginPopup from "./components/loginPopup/LoginPopup";
+import RegisterPopup from "./components/registerPopup/RegisterPopup";
 import "./LandingPage.css";
 
 const LandingPage = () => {
@@ -19,7 +19,7 @@ const LandingPage = () => {
   }
 
   return (
-    <>
+    <div className="container">
       <div className="bg-image" onClick={() => setPage("home")}>
         <div className="content">
           <h1>
@@ -35,7 +35,7 @@ const LandingPage = () => {
         <RegisterPopup page={page} setPage={setPage} />
         <ForgotPasswordPopup page={page} /> 
       </div>
-    </>
+    </div>
   );
 };
 

@@ -1,0 +1,53 @@
+.card {
+    width: 100%;
+    height: 150px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.75);
+    padding: 10px 20px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.card-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.card-header p {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.card-body {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.card-body .address p:first-child {
+    margin-bottom: -15px;
+}
+
+.card-body .links ul {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.card-link {
+    width: 30px;
+    height: 30px;
+}
+
+.links ul li:not(:last-child) {
+    margin-right: 10px;
+}
+
+.fav {
+    color: #c21807;
+}
