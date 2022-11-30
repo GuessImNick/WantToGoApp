@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { restaurantApi } from "../../api/restaurantApi";
 import { FaRegMap, FaRegPaperPlane, FaRegCommentDots } from "react-icons/fa";
-import { RiHeart3Fill, RiHeart3Line, RiArrowDownSLine } from "react-icons/ri";
+import { RiHeart3Fill, RiHeart3Line, RiArrowDownSLine, RiArrowLeftSLine } from "react-icons/ri";
 import "./Restaurant.css";
 import { useAuth } from "../../utils/context/authContext";
 import { favoriteApi } from "../../api/favoriteApi";
@@ -17,6 +17,7 @@ const Restaurant = () => {
 
   const { user, setUser } = useAuth();
   const { restaurantId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getRestaurant = async () => {
@@ -93,7 +94,8 @@ const Restaurant = () => {
     <div className="restaurant-content">
       <div className="restaurant-header">
         <div className="left-content">
-          <h2>{nameFormatter(restaurant.name)}</h2>
+          
+          <h2><RiArrowLeftSLine className="icon" onClick={() => navigate(-1)}/>{nameFormatter(restaurant.name)}</h2>
           <p>{restaurant.categories}</p>
         </div>
         <div className="right-content">
