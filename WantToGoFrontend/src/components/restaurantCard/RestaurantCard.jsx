@@ -3,7 +3,7 @@ import "./RestaurantCard.css";
 import { FaRegMap, FaRegCommentDots } from "react-icons/fa";
 import { RiHeart3Fill, RiHeart3Line } from "react-icons/ri";
 import { useAuth } from "../../utils/context/authContext";
-import { favoriteApi } from "../../api/favoriteApi";
+import { FavoriteApi } from "../../api/favoriteApi";
 import { UserApi } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
 
@@ -28,7 +28,7 @@ const RestaurantCard = ({ restaurant }) => {
   };
 
   const addFavorite = async () => {
-    await favoriteApi.createNewFavorite({
+    await FavoriteApi.createNewFavorite({
       userId: user.dbUser.id,
       restaurantId: restaurant.id,
     });
@@ -42,7 +42,7 @@ const RestaurantCard = ({ restaurant }) => {
     const fav = user.dbUser.favorites.find(
       (res) => res.restaurantId === restaurant.id
     );
-    await favoriteApi.deleteFavorite(fav.id);
+    await FavoriteApi.deleteFavorite(fav.id);
     const refreshUser = await UserApi.getUserByFirebaseId(user.fbUser.uid);
     setUser((prev) => {
       return { ...prev, dbUser: refreshUser };

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { restaurantApi } from "../api/restaurantApi";
+import { RestaurantApi } from "../api/restaurantApi";
 import Navbar from "../components/navbar/Navbar";
 import Favorites from "../pages/favorites/Favorites";
 import Home from "../pages/home/Home";
 import LandingPage from "../pages/landingPage/LandingPage";
+import Notification from "../pages/notifications/Notifications";
 import Restaurant from "../pages/restaurant/Restaurant";
 
 import { useAuth } from "../utils/context/authContext";
@@ -18,7 +19,7 @@ function App() {
   const { user, userLoading, setUser } = useAuth();
 
   const getRestaurants = async () => {
-    const restaurants = await restaurantApi.getRestaurantList();
+    const restaurants = await RestaurantApi.getRestaurantList();
     setRestaurants(restaurants);
   };
 
@@ -28,7 +29,7 @@ function App() {
         restaurants.slice(0, visibleRestaurants.length + 50)
       );
     } else {
-      const moreRestaurants = await restaurantApi.getRestaurantList(
+      const moreRestaurants = await RestaurantApi.getRestaurantList(
         restaurants.length / 200 + 1
       );
       if (moreRestaurants) {
@@ -63,6 +64,7 @@ function App() {
         />
         <Route path="/restaurant/:restaurantId" element={<Restaurant />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="/notifications" element={<Notification />} />
         <Route path="*" element={<Home changePath={changePath} visibleRestaurants={visibleRestaurants} />} />
       </Routes>
       <Navbar changePath={changePath} setPath={setPath} path={path} />

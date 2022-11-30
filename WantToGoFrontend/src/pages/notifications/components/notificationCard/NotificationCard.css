@@ -1,0 +1,35 @@
+.notification-card {
+    width: 100%;
+    height: 76px;
+    border-bottom: 1px solid #d3d3d3;
+    padding: 10px 50px;
+}
+
+.read {
+    background-color: #ffffff60;
+}
+
+.unread {
+    background-color: #fff;
+}
+
+.type {
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.message {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.delete-icon {
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    right: 0;
+    margin: 20px 20px 0 0;
+}

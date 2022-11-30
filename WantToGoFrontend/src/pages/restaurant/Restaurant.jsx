@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { restaurantApi } from "../../api/restaurantApi";
+import { RestaurantApi } from "../../api/restaurantApi";
 import { FaRegMap, FaRegPaperPlane, FaRegCommentDots } from "react-icons/fa";
 import { RiHeart3Fill, RiHeart3Line, RiArrowDownSLine, RiArrowLeftSLine } from "react-icons/ri";
 import "./Restaurant.css";
 import { useAuth } from "../../utils/context/authContext";
-import { favoriteApi } from "../../api/favoriteApi";
+import { FavoriteApi } from "../../api/favoriteApi";
 import { UserApi } from "../../api/userApi";
 import ReviewCard from "./components/reviewCard/ReviewCard";
 import { ReviewApi } from "../../api/reviewApi";
@@ -21,7 +21,7 @@ const Restaurant = () => {
 
   useEffect(() => {
     const getRestaurant = async () => {
-      const res = await restaurantApi.getRestaurantById(restaurantId);
+      const res = await RestaurantApi.getRestaurantById(restaurantId);
       setRestaurant(res);
       setCoverMap(true);
       window.scrollTo(0, 0);
@@ -38,7 +38,7 @@ const Restaurant = () => {
   };
 
   const addFavorite = async () => {
-    await favoriteApi.createNewFavorite({
+    await FavoriteApi.createNewFavorite({
       userId: user.dbUser.id,
       restaurantId: restaurant.id,
     });
@@ -52,7 +52,7 @@ const Restaurant = () => {
     const fav = user.dbUser.favorites.find(
       (res) => res.restaurantId === restaurant.id
     );
-    await favoriteApi.deleteFavorite(fav.id);
+    await FavoriteApi.deleteFavorite(fav.id);
     const refreshUser = await UserApi.getUserByFirebaseId(user.fbUser.uid);
     setUser((prev) => {
       return { ...prev, dbUser: refreshUser };
@@ -68,7 +68,7 @@ const Restaurant = () => {
         reviewText,
         reviewDate: date.toISOString().slice(0, 19),
       });
-      const res = await restaurantApi.getRestaurantById(restaurant.id);
+      const res = await RestaurantApi.getRestaurantById(restaurant.id);
       setRestaurant((prev) => {
         return { ...prev, reviews: res.reviews };
       });

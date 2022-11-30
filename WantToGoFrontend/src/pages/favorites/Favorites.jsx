@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { restaurantApi } from "../../api/restaurantApi";
+import { RestaurantApi } from "../../api/restaurantApi";
 import RestaurantCard from "../../components/restaurantCard/RestaurantCard";
 import { useAuth } from "../../utils/context/authContext";
 import "./Favorites.css";
@@ -11,7 +11,7 @@ const Favorites = () => {
     const getFavorites = async () => {
         const promises = [];
         for(const fav of user.dbUser.favorites) {
-            promises.push(restaurantApi.getRestaurantById(fav.restaurantId));
+            promises.push(RestaurantApi.getRestaurantById(fav.restaurantId));
         }
 
         const faves = await Promise.all(promises);

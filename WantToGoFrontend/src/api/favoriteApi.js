@@ -1,4 +1,4 @@
-export const favoriteApi = {
+export const FavoriteApi = {
   createNewFavorite: async (favorite) => {
     await fetch("https://localhost:7158/api/Favorite", {
       method: "POST",

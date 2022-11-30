@@ -11,8 +11,9 @@ import {
 import { RiCloseLine } from "react-icons/ri";
 import { UserApi } from "../../../../api/userApi";
 import { LikeApi } from "../../../../api/likeApi";
-import { restaurantApi } from "../../../../api/restaurantApi";
+import { RestaurantApi } from "../../../../api/restaurantApi";
 import { ReviewApi } from "../../../../api/reviewApi";
+import { NotificationApi } from "../../../../api/notificationApi";
 
 const ReviewCard = ({ review, setRestaurant }) => {
   const { user, setUser } = useAuth();
@@ -35,7 +36,13 @@ const ReviewCard = ({ review, setRestaurant }) => {
 
   const addLike = async () => {
     await LikeApi.addLike({ userId: user.dbUser.id, reviewId: review.id });
-    const res = await restaurantApi.getRestaurantById(review.restaurantId);
+    const res = await RestaurantApi.getRestaurantById(review.restaurantId);
+    await NotificationApi.sendNotification({
+      userId: review.userId,
+      senderId: user.dbUser.id,
+      type: "like",
+      isViewed: false,
+    });
     setRestaurant((prev) => {
       return { ...prev, reviews: res.reviews };
     });
@@ -46,7 +53,7 @@ const ReviewCard = ({ review, setRestaurant }) => {
       (like) => like.userId === user.dbUser.id
     );
     await LikeApi.deleteLike(likeToDelete.id);
-    const res = await restaurantApi.getRestaurantById(review.restaurantId);
+    const res = await RestaurantApi.getRestaurantById(review.restaurantId);
     setRestaurant((prev) => {
       return { ...prev, reviews: res.reviews };
     });
@@ -60,7 +67,7 @@ const ReviewCard = ({ review, setRestaurant }) => {
       reviewDate: date.toISOString().slice(0, 19),
     });
     setInUpdate(false);
-    const res = await restaurantApi.getRestaurantById(review.restaurantId);
+    const res = await RestaurantApi.getRestaurantById(review.restaurantId);
     setRestaurant((prev) => {
       return { ...prev, reviews: res.reviews };
     });
@@ -68,7 +75,7 @@ const ReviewCard = ({ review, setRestaurant }) => {
 
   const deleteReview = async () => {
     await ReviewApi.deleteReview(review.id);
-    const res = await restaurantApi.getRestaurantById(review.restaurantId);
+    const res = await RestaurantApi.getRestaurantById(review.restaurantId);
     setRestaurant((prev) => {
       return { ...prev, reviews: res.reviews };
     });
