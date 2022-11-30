@@ -147,5 +147,54 @@ namespace WantToGoApi.Repositories
                 }
             }
         }
+        public List<Restaurant> GetBySearchString(string searchString)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT TOP 50 id, 
+												name, 
+												categories, 
+												address,
+                                                city,
+                                                state,
+                                                zip,
+                                                latitude,
+                                                longitude
+										FROM [Restaurant]
+                                        WHERE name LIKE @searchString
+                                        OR categories LIKE @searchString
+									  ";
+                    cmd.Parameters.AddWithValue("@searchString", searchString + "%");
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        List<Restaurant> restaurants = new List<Restaurant>();
+                        while (reader.Read())
+                        {
+                            Restaurant restaurant = new Restaurant()
+                            {
+                                Id = reader.GetString(reader.GetOrdinal("id")),
+                                Name = reader.GetString(reader.GetOrdinal("name")),
+                                Categories = reader.GetString(reader.GetOrdinal("categories")),
+                                Address = reader[(reader.GetOrdinal("address"))] == DBNull.Value ? "Food Truck" : reader.GetString(reader.GetOrdinal("address")),
+                                City = reader.GetString(reader.GetOrdinal("city")),
+                                State = reader.GetString(reader.GetOrdinal("state")),
+                                Zip = reader.GetString(reader.GetOrdinal("zip")),
+                                Latitude = reader.GetString(reader.GetOrdinal("latitude")),
+                                Longitude = reader.GetString(reader.GetOrdinal("longitude")),
+                                Reviews = _reviewRepo.GetReviewsByRestaurantId(reader.GetString(reader.GetOrdinal("id")))
+                            };
+
+                            restaurants.Add(restaurant);
+                        }
+                        return restaurants;
+                    }
+
+                }
+            }
+        }
     }
 }

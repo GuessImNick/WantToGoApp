@@ -13,3 +13,23 @@
   .notifications {
     padding-bottom: 110px;
   }
+
+  .no-notifications {
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    margin-top: 130px;
+  }
+
+  .no-notifications p {
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .no-notifcation-icon {
+    width: 250px;
+    height: 250px;
+    margin-bottom: 30px;;
+  }

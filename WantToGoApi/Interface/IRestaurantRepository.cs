@@ -6,5 +6,6 @@ namespace WantToGoApi.Interface
     {
         List<Restaurant> GetAll(int page);
         Restaurant GetById(string id);
+        List<Restaurant> GetBySearchString(string searchString);
     }
 }
