@@ -43,5 +43,18 @@ namespace WantToGoApi.Controllers
             return Ok(restaurant);
         }
 
+        // GET api/<RestaurantController>/5
+        // RETURN: a restaurant by id
+        [HttpGet("search/{searchString}")]
+        public IActionResult GetByString(string searchString)
+        {
+            List<Restaurant> restaurants = _restaurantRepo.GetBySearchString(searchString);
+            if (restaurants == null)
+            {
+                return NotFound();
+            }
+            return Ok(restaurants);
+        }
+
     }
 }

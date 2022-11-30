@@ -7,6 +7,7 @@ import Home from "../pages/home/Home";
 import LandingPage from "../pages/landingPage/LandingPage";
 import Notification from "../pages/notifications/Notifications";
 import Restaurant from "../pages/restaurant/Restaurant";
+import Search from "../pages/search/Search";
 
 import { useAuth } from "../utils/context/authContext";
 
@@ -63,6 +64,7 @@ function App() {
           element={<Home changePath={changePath} visibleRestaurants={visibleRestaurants} getVisibleRestaurants={getVisibleRestaurants} />}
         />
         <Route path="/restaurant/:restaurantId" element={<Restaurant />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/notifications" element={<Notification />} />
         <Route path="*" element={<Home changePath={changePath} visibleRestaurants={visibleRestaurants} />} />

@@ -16,4 +16,15 @@ export const RestaurantApi = {
       return res2;
     }
   },
+
+  searchRestaurants: async (searchString) => {
+    const res = await fetch(
+      `https://localhost:7158/api/Restaurant/search/${searchString}`
+    );
+    if (res.status === 200) {
+      const res2 = await res.json();
+      return res2;
+    }
+  },
+  
 };
