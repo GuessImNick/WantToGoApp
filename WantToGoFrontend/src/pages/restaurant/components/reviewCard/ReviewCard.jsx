@@ -13,6 +13,7 @@ import { UserApi } from "../../../../api/userApi";
 import { LikeApi } from "../../../../api/likeApi";
 import { RestaurantApi } from "../../../../api/restaurantApi";
 import { ReviewApi } from "../../../../api/reviewApi";
+import { NotificationApi } from "../../../../api/notificationApi";
 
 const ReviewCard = ({ review, setRestaurant }) => {
   const { user, setUser } = useAuth();
@@ -36,6 +37,12 @@ const ReviewCard = ({ review, setRestaurant }) => {
   const addLike = async () => {
     await LikeApi.addLike({ userId: user.dbUser.id, reviewId: review.id });
     const res = await RestaurantApi.getRestaurantById(review.restaurantId);
+    await NotificationApi.sendNotification({
+      userId: review.userId,
+      senderId: user.dbUser.id,
+      type: "like",
+      isViewed: false,
+    });
     setRestaurant((prev) => {
       return { ...prev, reviews: res.reviews };
     });

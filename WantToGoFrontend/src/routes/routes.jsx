@@ -5,6 +5,7 @@ import Navbar from "../components/navbar/Navbar";
 import Favorites from "../pages/favorites/Favorites";
 import Home from "../pages/home/Home";
 import LandingPage from "../pages/landingPage/LandingPage";
+import Notification from "../pages/notifications/Notifications";
 import Restaurant from "../pages/restaurant/Restaurant";
 
 import { useAuth } from "../utils/context/authContext";
@@ -63,6 +64,7 @@ function App() {
         />
         <Route path="/restaurant/:restaurantId" element={<Restaurant />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="/notifications" element={<Notification />} />
         <Route path="*" element={<Home changePath={changePath} visibleRestaurants={visibleRestaurants} />} />
       </Routes>
       <Navbar changePath={changePath} setPath={setPath} path={path} />
