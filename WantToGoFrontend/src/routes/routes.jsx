@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { restaurantApi } from "../api/restaurantApi";
+import { RestaurantApi } from "../api/restaurantApi";
 import Navbar from "../components/navbar/Navbar";
 import Favorites from "../pages/favorites/Favorites";
 import Home from "../pages/home/Home";
@@ -18,7 +18,7 @@ function App() {
   const { user, userLoading, setUser } = useAuth();
 
   const getRestaurants = async () => {
-    const restaurants = await restaurantApi.getRestaurantList();
+    const restaurants = await RestaurantApi.getRestaurantList();
     setRestaurants(restaurants);
   };
 
@@ -28,7 +28,7 @@ function App() {
         restaurants.slice(0, visibleRestaurants.length + 50)
       );
     } else {
-      const moreRestaurants = await restaurantApi.getRestaurantList(
+      const moreRestaurants = await RestaurantApi.getRestaurantList(
         restaurants.length / 200 + 1
       );
       if (moreRestaurants) {

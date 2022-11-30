@@ -1,4 +1,4 @@
-export const restaurantApi = {
+export const RestaurantApi = {
   getRestaurantList: async (page = 1) => {
     const res = await fetch(
       `https://localhost:7158/api/Restaurant?page=${page}`
