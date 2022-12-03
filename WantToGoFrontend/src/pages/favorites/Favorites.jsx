@@ -8,21 +8,26 @@ import "./Favorites.css";
 const Favorites = () => {
   const { user } = useAuth();
   const [favorites, setFavorites] = useState([]);
+
   useEffect(() => {
     const getFavorites = async () => {
+      if(user.dbUser.favorites.length === 0) {
+        setFavorites([]);
+      }
       const promises = [];
+      if (user.dbUser.favorites.length > 0) {
       for (const fav of user.dbUser.favorites) {
         promises.push(RestaurantApi.getRestaurantById(fav.restaurantId));
       }
 
-      if (promises.length > 0) {
         const faves = await Promise.all(promises);
         setFavorites(faves);
       }
     };
-
     getFavorites();
-  });
+
+  }, [user]);
+
   return (
     <div className="favorite-container">
       <div className="favorite-header">

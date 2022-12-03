@@ -7,7 +7,18 @@ import { useAuth } from "../../../../utils/context/authContext";
 
 const NotificationCard = ({ notification }) => {
   const [sender, setSender] = useState();
-  const { user, userLoading, setUser } = useAuth();
+  const { user, setUser } = useAuth();
+
+  const userRefresh = async () => {
+    const refreshUser = await UserApi.getUserByFirebaseId(user.fbUser.uid);
+    setUser((prev) => {
+      return { ...prev, dbUser: refreshUser };
+    });
+    await NotificationApi.updateNotification({
+      ...notification,
+      isViewed: true,
+    });
+  };
 
   useEffect(() => {
     const getUserInfo = async (id) => {
@@ -15,7 +26,7 @@ const NotificationCard = ({ notification }) => {
       setSender(user);
     };
     getUserInfo(notification.senderId);
-    NotificationApi.updateNotification({...notification, isViewed: true})
+    userRefresh();
   }, []);
 
   const deleteNotification = async () => {
@@ -24,7 +35,7 @@ const NotificationCard = ({ notification }) => {
     setUser((prev) => {
       return { ...prev, dbUser: refreshUser };
     });
-  }
+  };
 
   const formatType = (type) => {
     let result;
@@ -56,7 +67,13 @@ const NotificationCard = ({ notification }) => {
         notification.isViewed ? "read" : "unread"
       }`}
     >
-      <h4 className="type">{formatType(notification.type)}<RiCloseLine className="delete-icon" onClick={() => deleteNotification()}/></h4>
+      <h4 className="type">
+        {formatType(notification.type)}
+        <RiCloseLine
+          className="delete-icon"
+          onClick={() => deleteNotification()}
+        />
+      </h4>
       <p className="message">{formatMessage()}</p>
     </div>
   );
