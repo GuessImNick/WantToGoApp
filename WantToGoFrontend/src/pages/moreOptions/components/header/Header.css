@@ -1,0 +1,34 @@
+.options-header {
+    margin: 100px 20px 30px 20px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+}
+
+.options-welcome-name {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+.options-initials {
+    width: 76px;
+    height: 76px;
+    background: #000;
+    color: #fff;
+    border-radius: 999px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.options-welcome-name h2 {
+    font-size: 24px;
+}
+
+.hide-option {
+    display: none !important;
+}

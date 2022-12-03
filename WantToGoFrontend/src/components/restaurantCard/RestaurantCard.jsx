@@ -100,6 +100,7 @@ const RestaurantCard = ({ restaurant }) => {
               <a
                 href={`https://www.google.com/maps/search/?api=1&query=${`${restaurant.name}%2C${restaurant.city}`}`}
                 target="_blank"
+                onClick={(e) => e.stopPropagation()}
               >
                 <FaRegMap className="card-link" />
               </a>
