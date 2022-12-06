@@ -152,6 +152,19 @@
 
 }
 
+.length-check {
+  position: absolute;
+  font-size: 12px;
+  bottom: -6px;
+  left: 35px;
+  color: red;
+  visibility: hidden;
+}
+
+.show {
+  visibility: visible;
+}
+
 /* Map Styles */
 .mapouter {
   width: 100%;

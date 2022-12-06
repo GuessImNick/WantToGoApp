@@ -113,3 +113,12 @@
     height: 0;
     visibility: hidden;
 }
+
+.error p:not(span:last-child), .error input::placeholder {
+    color: red;
+}
+
+.error input {
+    border: 1px solid red;
+}
+

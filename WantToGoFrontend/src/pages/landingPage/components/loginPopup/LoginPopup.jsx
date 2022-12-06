@@ -7,6 +7,7 @@ import { signIn, signOut } from "../../../../utils/auth";
 const LoginPopup = ({ page, setPage }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+  const [loginErrors, setLoginErrors] = useState({email: false, password: false})
 
   const onchange = (e) => {
     switch (e.target.className) {
@@ -21,6 +22,20 @@ const LoginPopup = ({ page, setPage }) => {
     }
   }
 
+  const signInUser = () => {
+    setLoginErrors({email: false, password: false})
+    if(loginForm.password && loginForm.email) {
+      signIn(loginForm);
+    } else {
+      if(!loginForm.password) setLoginErrors(prev => {
+        return {...prev, password: true}
+      })
+      if(!loginForm.email) setLoginErrors(prev => {
+        return {...prev, email: true}
+      })
+    }
+  }
+
   return (
     <div
       className={`login-popup`}
@@ -29,7 +44,7 @@ const LoginPopup = ({ page, setPage }) => {
     >
       <div className="form-group">
         <div className="input-group">
-          <div className="input">
+          <div className={`input ${loginErrors.email ? 'error' : null}`}>
             <p>Email Address</p>
             <input
               type="email"
@@ -39,7 +54,7 @@ const LoginPopup = ({ page, setPage }) => {
               className="email"
             />
           </div>
-          <div className="input">
+          <div className={`input ${loginErrors.password ? 'error' : null}`}>
             <p>
               <span>Password</span>
               <span onClick={() => setPage("forgotPassword")}>Forgot Password?</span>
@@ -64,7 +79,7 @@ const LoginPopup = ({ page, setPage }) => {
             )}
           </div>
         </div>
-        <Button type={"secondary"} text={"LOG IN"} onclick={() => signIn(loginForm)}/>
+        <Button type={"secondary"} text={"LOG IN"} onclick={signInUser}/>
         <p className="create-account-text">
           Don't have an account?{" "}
           <span onClick={() => setPage("register")}>Create An Account</span>

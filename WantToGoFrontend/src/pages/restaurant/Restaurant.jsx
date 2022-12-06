@@ -14,6 +14,7 @@ const Restaurant = () => {
   const [restaurant, setRestaurant] = useState({});
   const [coverMap, setCoverMap] = useState(true);
   const [reviewText, setReviewText] = useState("");
+  const [reviewError, setReviewError] = useState(false);
 
   const { user, setUser } = useAuth();
   const { restaurantId } = useParams();
@@ -73,6 +74,9 @@ const Restaurant = () => {
         return { ...prev, reviews: res.reviews };
       });
       setReviewText("");
+      setReviewError(false);
+    } else {
+      setReviewError(true);
     }
   };
 
@@ -165,6 +169,7 @@ const Restaurant = () => {
             onChange={(e) => setReviewText(e.target.value)}
           />
           <FaRegPaperPlane className="send-icon" onClick={addReview} />
+          <p className={`length-check ${reviewError ? 'show' : null}`}>Review must be at least 20 characters long</p>
         </div>
       </div>
     </div>

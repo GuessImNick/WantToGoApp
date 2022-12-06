@@ -13,6 +13,12 @@ const RegisterPopup = ({ page, setPage }) => {
     email: "",
     password: "",
   });
+  const [registerErrors, setRegisterErros] = useState({
+    firstName: false,
+    lastName: false,
+    email: false,
+    password: false,
+  });
 
   const onchange = (e) => {
     switch (e.target.className) {
@@ -45,6 +51,46 @@ const RegisterPopup = ({ page, setPage }) => {
         break;
     }
   };
+
+  const registerUser = () => {
+    setRegisterErros({
+      firstName: false,
+      lastName: false,
+      email: false,
+      password: false,
+    });
+    if (
+      registerForm.firstName &&
+      registerForm.lastName &&
+      registerForm.email &&
+      registerForm.password
+    ) {
+      register(registerForm);
+      setPage("login");
+    } else {
+      if (!registerErrors.firstName) {
+        setRegisterErros((prev) => {
+          return { ...prev, firstName: true };
+        });
+      }
+      if (!registerErrors.lastName) {
+        setRegisterErros((prev) => {
+          return { ...prev, lastName: true };
+        });
+      }
+      if (!registerErrors.email) {
+        setRegisterErros((prev) => {
+          return { ...prev, email: true };
+        });
+      }
+      if (!registerErrors.password) {
+        setRegisterErros((prev) => {
+          return { ...prev, password: true };
+        });
+      }
+    }
+  };
+
   return (
     <div
       className={`register-popup`}
@@ -53,7 +99,7 @@ const RegisterPopup = ({ page, setPage }) => {
     >
       <div className="form-group">
         <div className="input-group">
-          <div className="input">
+          <div className={`input ${registerErrors.firstName ? 'error' : null}`}>
             <p>First Name</p>
             <input
               type="text"
@@ -63,7 +109,7 @@ const RegisterPopup = ({ page, setPage }) => {
               className="firstName"
             />
           </div>
-          <div className="input">
+          <div className={`input ${registerErrors.lastName ? 'error' : null}`}>
             <p>Last Name</p>
             <input
               type="text"
@@ -73,7 +119,7 @@ const RegisterPopup = ({ page, setPage }) => {
               className="lastName"
             />
           </div>
-          <div className="input">
+          <div className='input'>
             <p>Date Of Birth (optional)</p>
             <input
               type="date"
@@ -82,7 +128,7 @@ const RegisterPopup = ({ page, setPage }) => {
               className="dob"
             />
           </div>
-          <div className="input">
+          <div className={`input ${registerErrors.email ? 'error' : null}`}>
             <p>Email Address</p>
             <input
               type="text"
@@ -92,7 +138,7 @@ const RegisterPopup = ({ page, setPage }) => {
               className="email"
             />
           </div>
-          <div className="input">
+          <div className={`input ${registerErrors.password ? 'error' : null}`}>
             <p>Create Password</p>
             <input
               type={passwordVisible ? "text" : "password"}
@@ -117,10 +163,7 @@ const RegisterPopup = ({ page, setPage }) => {
         <Button
           type={"secondary"}
           text={"CREATE MY ACCOUNT"}
-          onclick={() => {
-            register(registerForm);
-            setPage("login");
-          }}
+          onclick={registerUser}
         />
         <p className="login-text">
           Already a member? <span onClick={() => setPage("login")}>Log In</span>
