@@ -69,7 +69,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(WantToGoApi);
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

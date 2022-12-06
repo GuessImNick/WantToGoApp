@@ -32,7 +32,12 @@ const MoreOptions = ({ changePath }) => {
               <RiSettings4Line className="options-icon" />
               SETTINGS
             </li>
-            <li onClick={signOut}>
+            <li
+              onClick={() => {
+                signOut();
+                changePath("/");
+              }}
+            >
               <RiLogoutBoxLine className="options-icon" />
               SIGNOUT
             </li>

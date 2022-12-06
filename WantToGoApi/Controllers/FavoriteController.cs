@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WantToGoApi.Interface;
 using WantToGoApi.Models;
 
@@ -6,6 +7,7 @@ using WantToGoApi.Models;
 
 namespace WantToGoApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class FavoriteController : ControllerBase

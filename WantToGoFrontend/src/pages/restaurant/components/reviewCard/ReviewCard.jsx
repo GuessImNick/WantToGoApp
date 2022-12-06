@@ -16,15 +16,15 @@ import { ReviewApi } from "../../../../api/reviewApi";
 import { NotificationApi } from "../../../../api/notificationApi";
 
 const ReviewCard = ({ review, setRestaurant }) => {
-  const { user, setUser } = useAuth();
+  const { user } = useAuth();
   const [reviewer, setReviewer] = useState({});
   const [inUpdate, setInUpdate] = useState(false);
   const [updateText, setUpdateText] = useState("");
 
   useEffect(() => {
     const getUserInfo = async (id) => {
-      const user = await UserApi.getUserById(id);
-      setReviewer(user);
+      const _user = await UserApi.getUserById(id, user.fbUser.ya);
+      setReviewer(_user);
     };
     setUpdateText(review.reviewText);
     if (user.dbUser.id === review.userId) {
@@ -35,14 +35,14 @@ const ReviewCard = ({ review, setRestaurant }) => {
   }, []);
 
   const addLike = async () => {
-    await LikeApi.addLike({ userId: user.dbUser.id, reviewId: review.id });
+    await LikeApi.addLike({ userId: user.dbUser.id, reviewId: review.id }, user.fbUser.ya);
     const res = await RestaurantApi.getRestaurantById(review.restaurantId);
     await NotificationApi.sendNotification({
       userId: review.userId,
       senderId: user.dbUser.id,
       type: "like",
       isViewed: false,
-    });
+    }, user.fbUser.ya);
     setRestaurant((prev) => {
       return { ...prev, reviews: res.reviews };
     });
@@ -52,7 +52,7 @@ const ReviewCard = ({ review, setRestaurant }) => {
     const likeToDelete = review.likes.find(
       (like) => like.userId === user.dbUser.id
     );
-    await LikeApi.deleteLike(likeToDelete.id);
+    await LikeApi.deleteLike(likeToDelete.id, user.fbUser.ya);
     const res = await RestaurantApi.getRestaurantById(review.restaurantId);
     setRestaurant((prev) => {
       return { ...prev, reviews: res.reviews };
@@ -61,11 +61,14 @@ const ReviewCard = ({ review, setRestaurant }) => {
 
   const updateReview = async () => {
     const date = new Date();
-    await ReviewApi.updateReview({
-      ...review,
-      reviewText: updateText,
-      reviewDate: date.toISOString().slice(0, 19),
-    });
+    await ReviewApi.updateReview(
+      {
+        ...review,
+        reviewText: updateText,
+        reviewDate: date.toISOString().slice(0, 19),
+      },
+      user.fbUser.ya
+    );
     setInUpdate(false);
     const res = await RestaurantApi.getRestaurantById(review.restaurantId);
     setRestaurant((prev) => {
@@ -74,7 +77,7 @@ const ReviewCard = ({ review, setRestaurant }) => {
   };
 
   const deleteReview = async () => {
-    await ReviewApi.deleteReview(review.id);
+    await ReviewApi.deleteReview(review.id, user.fbUser.ya);
     const res = await RestaurantApi.getRestaurantById(review.restaurantId);
     setRestaurant((prev) => {
       return { ...prev, reviews: res.reviews };

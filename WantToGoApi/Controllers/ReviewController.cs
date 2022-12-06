@@ -7,6 +7,7 @@ using WantToGoApi.Models;
 
 namespace WantToGoApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ReviewController : ControllerBase

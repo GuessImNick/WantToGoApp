@@ -31,8 +31,8 @@ const RestaurantCard = ({ restaurant }) => {
     await FavoriteApi.createNewFavorite({
       userId: user.dbUser.id,
       restaurantId: restaurant.id,
-    });
-    const refreshUser = await UserApi.getUserByFirebaseId(user.fbUser.uid);
+    }, user.fbUser.ya);
+    const refreshUser = await UserApi.getUserByFirebaseId(user.fbUser.uid, user.fbUser.ya);
     setUser((prev) => {
       return { ...prev, dbUser: refreshUser };
     });
@@ -42,8 +42,8 @@ const RestaurantCard = ({ restaurant }) => {
     const fav = user.dbUser.favorites.find(
       (res) => res.restaurantId === restaurant.id
     );
-    await FavoriteApi.deleteFavorite(fav.id);
-    const refreshUser = await UserApi.getUserByFirebaseId(user.fbUser.uid);
+    await FavoriteApi.deleteFavorite(fav.id, user.fbUser.ya);
+    const refreshUser = await UserApi.getUserByFirebaseId(user.fbUser.uid, user.fbUser.ya);
     setUser((prev) => {
       return { ...prev, dbUser: refreshUser };
     });

@@ -10,28 +10,28 @@ const NotificationCard = ({ notification }) => {
   const { user, setUser } = useAuth();
 
   const userRefresh = async () => {
-    const refreshUser = await UserApi.getUserByFirebaseId(user.fbUser.uid);
+    const refreshUser = await UserApi.getUserByFirebaseId(user.fbUser.uid, user.fbUser.ya);
     setUser((prev) => {
       return { ...prev, dbUser: refreshUser };
     });
     await NotificationApi.updateNotification({
       ...notification,
       isViewed: true,
-    });
+    }, user.fbUser.ya);
   };
 
   useEffect(() => {
     const getUserInfo = async (id) => {
-      const user = await UserApi.getUserById(id);
-      setSender(user);
+      const _user = await UserApi.getUserById(id, user.fbUser.ya);
+      setSender(_user);
     };
     getUserInfo(notification.senderId);
     userRefresh();
   }, []);
 
   const deleteNotification = async () => {
-    await NotificationApi.deleteNotification(notification.id);
-    const refreshUser = await UserApi.getUserByFirebaseId(user.fbUser.uid);
+    await NotificationApi.deleteNotification(notification.id, user.fbUser.ya);
+    const refreshUser = await UserApi.getUserByFirebaseId(user.fbUser.uid, user.fbUser.ya);
     setUser((prev) => {
       return { ...prev, dbUser: refreshUser };
     });

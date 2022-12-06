@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { UserApi } from "../../api/userApi";
 import { firebase } from "../client";
+import "firebase/auth";
 
 const AuthContext = createContext();
 
@@ -18,8 +19,14 @@ const AuthProvider = (props) => {
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (fbUser) => {
       if (fbUser) {
-        const dbUser = await UserApi.getUserByFirebaseId(fbUser.uid);
-        setUser({ fbUser: { ...fbUser }, dbUser });
+        console.log(fbUser)
+        const dbUser = await UserApi.getUserByFirebaseId(fbUser.uid, fbUser.ya).catch(null);
+        if(dbUser) {
+          setUser({ fbUser: { ...fbUser }, dbUser });
+        } else {
+          setUser(false);
+          firebase.auth().signOut();
+        }
       } else {
         setUser(false);
       }

@@ -16,17 +16,17 @@ const RegisterPopup = ({ page, setPage }) => {
 
   const onchange = (e) => {
     switch (e.target.className) {
-        case "firstName":
+      case "firstName":
         setRegisterForm((prev) => {
           return { ...prev, firstName: e.target.value };
         });
         break;
-        case "lastName":
+      case "lastName":
         setRegisterForm((prev) => {
           return { ...prev, lastName: e.target.value };
         });
         break;
-        case "dob":
+      case "dob":
         setRegisterForm((prev) => {
           return { ...prev, dob: e.target.value };
         });
@@ -79,7 +79,6 @@ const RegisterPopup = ({ page, setPage }) => {
               type="date"
               value={registerForm.dob}
               onChange={(e) => onchange(e)}
-              
               className="dob"
             />
           </div>
@@ -115,7 +114,14 @@ const RegisterPopup = ({ page, setPage }) => {
             )}
           </div>
         </div>
-        <Button type={"secondary"} text={"CREATE MY ACCOUNT"} onclick={() => {register(registerForm)}} />
+        <Button
+          type={"secondary"}
+          text={"CREATE MY ACCOUNT"}
+          onclick={() => {
+            register(registerForm);
+            setPage("login");
+          }}
+        />
         <p className="login-text">
           Already a member? <span onClick={() => setPage("login")}>Log In</span>
         </p>
