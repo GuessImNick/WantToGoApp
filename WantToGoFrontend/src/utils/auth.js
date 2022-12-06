@@ -10,14 +10,14 @@ const register = async ({ firstName, lastName, dob, email, password }) => {
   const fbUser = await firebase
     .auth()
     .createUserWithEmailAndPassword(email, password);
-  await firebase.auth().signOut();
   await UserApi.createNewUser({
     firstName,
     lastName,
     dob,
     firebaseUid: fbUser.user.uid,
     isAdmin: false,
-  }, fbUser.ya);
+  }, fbUser.user.ya);
+  await firebase.auth().signOut();
 };
 
 const forgotPassword = async (email) => {
